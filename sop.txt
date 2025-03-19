@@ -21,6 +21,9 @@ Running a Prisma migration:
 
 ```console
 npx prisma migrate dev --name init
+
+npx prisma migrate dev --name add_user_relation
+
 ```
 Generate the Prisma client after defining your schema:
 
