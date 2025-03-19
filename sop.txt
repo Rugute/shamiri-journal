@@ -1,0 +1,30 @@
+Using Prisma with MySQL
+Prisma is an ORM that works very well with MySQL, providing a type-safe query interface and schema management.
+npm install @prisma/client
+npm install prisma --save-dev
+npm install mysql2
+npm install jsonwebtoken bcryptjs
+
+Token generator
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+```console
+npm install @prisma/client
+npm install prisma --save-dev
+npm install mysql2
+```
+
+```console
+npx prisma init
+```
+Running a Prisma migration:
+
+```console
+npx prisma migrate dev --name init
+```
+Generate the Prisma client after defining your schema:
+
+```console
+npx prisma generate
+
+npm install jsonwebtoken
