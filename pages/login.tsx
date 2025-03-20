@@ -11,13 +11,13 @@ const LoginPage: React.FC = () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await fetch('/api/auth/validate', {
+            const response = await fetch('/api/auth/validate', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
-          });
+            });
           if (response.ok) {
             router.push('/profile');
           } else {
@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
   }, [router]);
 
   const handleLoginSuccess = (): void => {
-    router.push('/profile'); // Redirect to the profile page on successful login
+    router.push('/user/dashboard'); // Redirect to the profile page on successful login
   };
 
   return (
