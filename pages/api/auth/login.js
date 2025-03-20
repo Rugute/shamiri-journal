@@ -14,9 +14,14 @@ export default async function handler(req, res) {
     }
 
     try {
-      // Find user by username
-      const user = await prisma.user.findUnique({
-        where: { username },
+      // Find user by username or email
+      const user = await prisma.user.findFirst({
+        where: {
+          OR: [
+        { username },
+        { email: username }, // Assuming the input could be an email
+          ],
+        },
       });
 
       if (!user) {
