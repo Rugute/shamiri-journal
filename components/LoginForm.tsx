@@ -51,8 +51,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
        <form onSubmit={handleSubmit} className="space-y-6">
          <div>
-           <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-             Email address
+           <label htmlFor="username" className="block text-sm/6 font-medium text-gray-900">
+             Username address
            </label>
            <div className="mt-2">
              <input
@@ -87,6 +87,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
              />
            </div>
+         </div>
+         <div className="mb-4">
+        {error && <p className="text-red-500 text-sm">{error}</p>}
          </div>
 
          <div>

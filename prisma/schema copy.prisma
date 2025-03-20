@@ -20,7 +20,7 @@ model User {
   email     String @unique @default("info@info.com")
   role      String
   createdAt DateTime @default(now())
-
+  journals Journal[] 
 }
 
 model Journal {
@@ -29,5 +29,6 @@ model Journal {
   content   String
   category  String
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
   userId    Int
 }

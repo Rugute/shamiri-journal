@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     }
 
     const decoded = verifyToken(token);
+    console.log(decoded);
 
     if (!decoded) {
       return res.status(403).json({ error: 'Invalid or expired token' });

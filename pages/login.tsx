@@ -7,11 +7,29 @@ const LoginPage: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      // TODO: Validate the token with an API call or decode it to ensure it's valid
-      router.push('/profile');
-    }
+    const validateToken = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch('/api/auth/validate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.ok) {
+            router.push('/profile');
+          } else {
+            console.error('Invalid token');
+          }
+        } catch (error) {
+          console.error('Error validating token:', error);
+        }
+      }
+    };
+
+    validateToken();
   }, [router]);
 
   const handleLoginSuccess = (): void => {
