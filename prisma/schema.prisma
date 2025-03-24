@@ -16,10 +16,13 @@ datasource db {
 model User {
   id        Int     @id @default(autoincrement())
   username  String  @unique
+  fullname  String? //optional
   password  String
   email     String @unique @default("info@info.com")
   role      String
   createdAt DateTime @default(now())
+  resetToken String?
+  tokenExpiry DateTime @default(now())
 
 }
 

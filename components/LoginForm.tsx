@@ -46,7 +46,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
       <h2 className="mt-10 text-center text-3xl/9 font-bold tracking-tight text-gray-900">
         Personal Journaling App
       </h2>
-    </div>
+     </div>
 
      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
        <form onSubmit={handleSubmit} className="space-y-6">
@@ -71,8 +71,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                Password
              </label>
              <div className="text-sm">
-               <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                 Forgot password?
+               <a href="/forgot-password" className="font-semibold text-indigo-600 hover:text-indigo-500">
+               Forgot password?
                </a>
              </div>
            </div>
@@ -104,7 +104,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
 
        <p className="mt-10 text-center text-sm/6 text-gray-500">
          Not a member?{' '}
-         <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+         <a href="/register" className="font-semibold text-indigo-600 hover:text-indigo-500">
           Create Account Here
          </a>
        </p>
