@@ -34,5 +34,4 @@ Generate the Prisma client after defining your schema:
 npx prisma generate
 
 npm install jsonwebtoken
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'nNoel@2019';
 
