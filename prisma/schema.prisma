@@ -34,3 +34,30 @@ model Journal {
   createdAt DateTime @default(now())
   userId    Int
 }
+
+model JournalCategory {
+  id        Int      @id @default(autoincrement())
+  category  String
+  createdAt DateTime @default(now())
+}
+model Tags {
+  id        Int      @id @default(autoincrement())
+  name  String
+  createdAt DateTime @default(now())
+}
+model JournalTags {
+  id        Int      @id @default(autoincrement())
+  name  String
+  createdAt DateTime @default(now())
+}
+model Analytics {
+  id        Int      @id @default(autoincrement())
+  userId
+  totalEntries Int
+  averageEntryLength Int
+  mostUsedCategory String?
+  createdAt DateTime @default(now())
+}
+
+
+
