@@ -6,9 +6,9 @@ export default async function handler(req, res) {
         const journals = await prisma.journal.findMany();
         res.json(journals);
       } else if (req.method === 'POST') {
-        const { title, content, category, userId } = req.body;
+        const { title, content, category } = req.body;
         const journal = await prisma.journal.create({
-          data: { title, content, category, userId },
+          data: { title, content, category },
         });
         res.json(journal);
       } else if (req.method === 'PUT') {

@@ -27,6 +27,8 @@ npx prisma migrate dev --name remove_user_relation_journal
 npx prisma migrate dev --name added_user_token_recovery_password
 npx prisma migrate dev --name added_janournal_category_to_be_dynanic
 
+npx prisma migrate dev --name added_journal_models
+npx prisma migrate dev --name removed_userid_in_journal_models
 ```
 Generate the Prisma client after defining your schema:
 
