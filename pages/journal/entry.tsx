@@ -1,5 +1,6 @@
 import AdminLayout from '@/components/layouts/AdminLayout';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 interface JournalEntry {
     id: string;
@@ -8,9 +9,37 @@ interface JournalEntry {
     category: string;
     date: string;
 }
-
 const Entry: React.FC = () => {
+    const [categories, setCategories] = useState<{ id: string; category: string }[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('/api/journals/category');
+                const data = await response.json();
+                setCategories(data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
     const [entries, setEntries] = useState<JournalEntry[]>([]);
+
+    useEffect(() => {
+        const fetchEntries = async () => {
+            try {
+                const response = await fetch('/api/journals/entry');
+                const data = await response.json();
+                setEntries(data);
+            } catch (error) {
+                console.error('Error fetching entries:', error);
+            }
+        };
+
+        fetchEntries();
+    }, []);
     const [entry, setEntry] = useState<JournalEntry>({
         id: '',
         title: '',
@@ -103,15 +132,26 @@ const Entry: React.FC = () => {
                                 </div>
                                 <div>
                                     <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category:</label>
-                                    <input
-                                        type="text"
+                                    <select
                                         id="category"
                                         name="category"
                                         value={entry.category}
-                                        onChange={handleChange}
+                                        onChange={(e) =>
+                                            setEntry((prev) => ({
+                                                ...prev,
+                                                category: e.target.value,
+                                            }))
+                                        }
                                         required
                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    />
+                                    >
+                                        <option value="" disabled>Select a category</option>
+                                        {categories.map((category) => (
+                                            <option key={category.id} value={category.category}>
+                                                {category.category}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div>
                                     <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date:</label>
@@ -135,6 +175,59 @@ const Entry: React.FC = () => {
                                     </button>
                                     <button
                                         type="submit"
+                                        onClick={async () => {
+                                            try {
+                                                const response = await fetch('/api/journals/entry', {
+                                                    method: entry.id ? 'PUT' : 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: JSON.stringify(entry),
+                                                });
+
+                                                if (!response.ok) {
+                                                    throw new Error('Failed to save entry');
+                                                }
+
+                                                const savedEntry = await response.json();
+
+                                                if (entry.id) {
+                                                    setEntries((prev) =>
+                                                        prev.map((item) =>
+                                                            item.id === savedEntry.id ? savedEntry : item
+                                                        )
+                                                    );
+                                                } else {
+                                                    setEntries((prev) => [savedEntry, ...prev]);
+                                                }
+
+                                                setEntry({
+                                                    id: '',
+                                                    title: '',
+                                                    content: '',
+                                                    category: '',
+                                                    date: new Date().toISOString().split('T')[0],
+                                                });
+                                                setIsModalOpen(false); // Close the modal after submission
+
+                                                const Swal = (await import('sweetalert2')).default;
+                                                Swal.fire({
+                                                    title: 'Success!',
+                                                    text: entry.id ? 'Entry updated successfully!' : 'Entry saved successfully!',
+                                                    icon: 'success',
+                                                    confirmButtonText: 'OK',
+                                                });
+                                            } catch (error) {
+                                                console.error('Error saving entry:', error);
+                                                const Swal = (await import('sweetalert2')).default;
+                                                Swal.fire({
+                                                    title: 'Error!',
+                                                    text: 'Failed to save entry. Please try again.',
+                                                    icon: 'error',
+                                                    confirmButtonText: 'OK',
+                                                });
+                                            }
+                                        }}
                                         className="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                     >
                                         {entry.id ? 'Update Entry' : 'Save Entry'}
@@ -152,7 +245,6 @@ const Entry: React.FC = () => {
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
@@ -162,7 +254,6 @@ const Entry: React.FC = () => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.title}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{item.content}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.category}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.date}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                                     <div className="flex space-x-2">
                                         <button
